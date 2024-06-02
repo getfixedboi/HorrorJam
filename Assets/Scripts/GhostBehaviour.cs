@@ -42,7 +42,7 @@ public class GhostBehaviour : MonoBehaviour
     private bool _isAttacking = false;
     public int CurrentHealth = 25;
 
-    private bool _DisableMulInvoking=false;
+    private bool _DisableMulInvoking = false;
 
     private void Awake()
     {
@@ -71,7 +71,7 @@ public class GhostBehaviour : MonoBehaviour
 
     private void Update()
     {
-        if(_DisableMulInvoking)
+        if (_DisableMulInvoking)
         {
             return;
         }
@@ -81,14 +81,14 @@ public class GhostBehaviour : MonoBehaviour
             _interpreter.RunUntilDone(.1);
             _animator.Play("death");
         }
-        else if (Vector3.Distance(transform.position,_target.position)<=_agent.stoppingDistance && _isAttacking && CurrentGhostType == GhostType.follower)
+        else if (Vector3.Distance(transform.position, _target.position) <= _agent.stoppingDistance && _isAttacking && CurrentGhostType == GhostType.follower)
         {
-            _DisableMulInvoking=true;
+            _DisableMulInvoking = true;
             StartCoroutine(AttackCooldown());
         }
-        else if (Vector3.Distance(transform.position,_target.position)<=_agent.stoppingDistance && !_isAttacking && CurrentGhostType == GhostType.follower)
+        else if (Vector3.Distance(transform.position, _target.position) <= _agent.stoppingDistance && !_isAttacking && CurrentGhostType == GhostType.follower)
         {
-            _isAttacking=true;
+            _isAttacking = true;
         }
         else
         {
@@ -110,8 +110,8 @@ public class GhostBehaviour : MonoBehaviour
         if (CurrentGhostType == GhostType.suicide)
         {
             _source.Stop();
-            _source.PlayOneShot(_clips[0]);
             _isScreaming = true;
+            _source.PlayOneShot(_clips[0]);
             _target.GetComponent<PlayerHealth>().TakeDamage(20);
         }
     }
@@ -164,8 +164,9 @@ public class GhostBehaviour : MonoBehaviour
 
         if (CurrentHealth <= 0)
         {
-            _isScreaming=true;
-            _DisableMulInvoking=false;
+            _isScreaming = true;
+            _DisableMulInvoking = false;
+            _source.PlayOneShot(_clips[0]);
         }
     }
 
@@ -174,13 +175,13 @@ public class GhostBehaviour : MonoBehaviour
         _agent.SetDestination(transform.position);
         _animator.Play("fix");
         _animator.Play("attack");
-        
+
         yield return new WaitForSeconds(.90f);
         _target.GetComponent<PlayerHealth>().TakeDamage(20);
         yield return new WaitForSeconds(.85f);
 
         _isAttacking = false;
-        _DisableMulInvoking=false;
+        _DisableMulInvoking = false;
     }
 
     private void ErrorOutput(string s, bool l)
