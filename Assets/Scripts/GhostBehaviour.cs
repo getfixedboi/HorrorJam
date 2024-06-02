@@ -82,8 +82,6 @@ public class GhostBehaviour : MonoBehaviour
         Color color = _material.color;
         _material.color = new Color(color.r, color.g, color.b, opacity-0.01f);
 
-        UnityEngine.Debug.Log(opacity);
-
         ChangeMaterialsToLocal(parent,_material);
 
         if(opacity<=0)
