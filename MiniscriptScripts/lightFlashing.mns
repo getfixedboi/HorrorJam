@@ -1,0 +1,6 @@
+delay = 0.03
+
+while true
+    Blink
+    wait delay
+end while

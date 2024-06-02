@@ -3,19 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Miniscript;
+using System.IO;
 
 public class TextTyping : MonoBehaviour
 {
-   [SerializeField] [TextArea] private string _sourceText;
-   [SerializeField] private Text _textHolder;
-   [SerializeField] private AudioClip[] _clips;
-
-   [SerializeField] private TransitionManager _transitionManager;
-
+    private const string _textSource = "MiniscriptScripts\\introText.mns";
+    private string _sourceText;
+    [SerializeField] private Text _textHolder;
+    [SerializeField] private AudioClip[] _clips;
     private AudioSource _audioSource;
 
     private void Awake()
     {
+        Interpreter interpreter = new Interpreter();
+
+        interpreter.Reset(File.ReadAllText(_textSource));
+        interpreter.Compile();
+        interpreter.RunUntilDone(.2);
+
+        Value valueText = interpreter.GetGlobalValue("typingText");
+        _sourceText = valueText.ToString();
         _audioSource = GetComponent<AudioSource>();
     }
     private void Start()
@@ -38,7 +46,7 @@ public class TextTyping : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         }
         yield return new WaitForSeconds(2f);
-        _transitionManager.ChangeScene();
+        SceneManager.LoadScene(1);
     }
 
     private AudioClip GetRandomClip()
