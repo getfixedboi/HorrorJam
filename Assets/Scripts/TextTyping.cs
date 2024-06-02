@@ -14,6 +14,8 @@ public class TextTyping : MonoBehaviour
     [SerializeField] private AudioClip[] _clips;
     private AudioSource _audioSource;
 
+    [SerializeField] private TransitionManager _transitionManager;
+
     private void Awake()
     {
         Interpreter interpreter = new Interpreter();
@@ -46,7 +48,7 @@ public class TextTyping : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         }
         yield return new WaitForSeconds(2f);
-        SceneManager.LoadScene(1);
+        _transitionManager.ChangeScene();
     }
 
     private AudioClip GetRandomClip()

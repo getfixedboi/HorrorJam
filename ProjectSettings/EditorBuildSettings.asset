@@ -6,12 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Intro.unity
-    guid: bca7fcea753e66c4ba660e8aa1f64cec
-  - enabled: 0
-    path: Assets/Scenes/MeraiScene.unity
-    guid: 0adb62b588228fe45ac454f0eee090fb
-  - enabled: 1
     path: Assets/Scenes/copy.unity
     guid: 80a929f4238ccbc43ab8ef330d46da9a
+  - enabled: 1
+    path: Assets/Scenes/Intro.unity
+    guid: bca7fcea753e66c4ba660e8aa1f64cec
+  - enabled: 1
+    path: Assets/Scenes/MeraiScene.unity
+    guid: 0adb62b588228fe45ac454f0eee090fb
   m_configObjects: {}

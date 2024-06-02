@@ -1,4 +1,5 @@
 lines = {
-     "1": "replic 1",
-     "2": "replic 2",
-     "3": "replic 3" }
+     "1": "Where am I? I don't understand how I got here.",
+     "2": "It's probably just another nightmare.",
+     "3": "It's my dad's old revolver.",
+     "4": "How could he show up here?" }
