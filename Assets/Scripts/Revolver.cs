@@ -96,11 +96,11 @@ public class Revolver : MonoBehaviour
     {
         if (Physics.Raycast(_camera.transform.position, _camera.transform.forward, out _hit, Distance))
         {
-           //// BaseEnemyScript enemy = _hit.collider.GetComponent<BaseEnemyScript>();
-           // if (enemy != null)
-           // {
-           //     enemy.TakeDamage(Damage);
-           // }
+           GhostBehaviour enemy = _hit.collider.GetComponent<GhostBehaviour>();
+           if (enemy != null)
+            { 
+               enemy.TakeDamage(Damage);
+            }
         }
     }
    private IEnumerator C_Reload()
