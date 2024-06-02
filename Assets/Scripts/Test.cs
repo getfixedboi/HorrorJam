@@ -7,8 +7,6 @@ using System.IO;
 public class Test : MonoBehaviour
 {
     private const string _filepath = "MiniscriptScripts\\dialogue.mns";
-
-    private string extraCode = "";
     private Interpreter _interpreter = new Interpreter();
 
     private ValMap _config;

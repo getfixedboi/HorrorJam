@@ -6,16 +6,18 @@ using System.IO;
 
 public class LightBliking : MonoBehaviour
 {
-    private const string _sourceCode = "MiniscriptScripts\\lightFlashing.mns";
+    private string _sourceCode;
     public Light lightComponent;
     public float blinkingSpeed;
     public float minIntensity;
     public float maxIntensity;
+    public float skipTime;
 
     private Interpreter _interpreter = new Interpreter();
 
     void Start()
     {
+        _sourceCode = $"while true \n Blink \n wait {skipTime.ToString().Replace(',', '.')} \n end while";
         lightComponent = GetComponent<Light>();
 
         Intrinsic f = Intrinsic.Create("Blink");
@@ -28,7 +30,7 @@ public class LightBliking : MonoBehaviour
 
         _interpreter.errorOutput = (string s, bool l) => ErrorOutput(s, l);
 
-        _interpreter.Reset(File.ReadAllText(_sourceCode));
+        _interpreter.Reset(_sourceCode);
         _interpreter.Compile();
     }
 
