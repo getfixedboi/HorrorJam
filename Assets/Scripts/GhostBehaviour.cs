@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using Assets.Scripts.Cam.Effects;
 using Miniscript;
-using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.AI;
+
 
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(BoxCollider))]
@@ -34,6 +36,8 @@ public class GhostBehaviour : MonoBehaviour
     private bool _isScreaming = false;
 
     [SerializeField] List<AudioClip> _clips;
+
+    public AudioClip punchSound;
     [SerializeField] private int _id;
     [Range(0.01f, 1f)][SerializeField] private float _timeToWait;
 
@@ -44,8 +48,22 @@ public class GhostBehaviour : MonoBehaviour
 
     private bool _DisableMulInvoking = false;
 
+
+    [HideInInspector]
+    public bool IsCanTakeDamage;
+
+
+
+    public ParticleSystem hit;
+    public ParticleSystem hit1;
+
+
+    private Rigidbody _rb;
+
     private void Awake()
     {
+        IsCanTakeDamage = false;
+        _rb = GetComponent<Rigidbody>();
         _agent = GetComponent<NavMeshAgent>();
         _animator = GetComponent<Animator>();
         _source = GetComponent<AudioSource>();
@@ -77,20 +95,23 @@ public class GhostBehaviour : MonoBehaviour
         }
         if (_isScreaming)
         {
-            _agent.SetDestination(transform.position);
+            _rb.isKinematic = true;
+            GetComponent<BoxCollider>().enabled = false;
+            _agent.enabled = false;
+           // _agent.SetDestination(transform.position);
             _interpreter.RunUntilDone(.1);
             _animator.Play("death");
         }
-        else if (Vector3.Distance(transform.position, _target.position) <= _agent.stoppingDistance && _isAttacking && CurrentGhostType == GhostType.follower)
+        else if (Vector3.Distance(transform.position, _target.position) <= _agent.stoppingDistance && _isAttacking && CurrentGhostType == GhostType.follower && !_isScreaming)
         {
             _DisableMulInvoking = true;
             StartCoroutine(AttackCooldown());
         }
-        else if (Vector3.Distance(transform.position, _target.position) <= _agent.stoppingDistance && !_isAttacking && CurrentGhostType == GhostType.follower)
+        else if (Vector3.Distance(transform.position, _target.position) <= _agent.stoppingDistance && !_isAttacking && CurrentGhostType == GhostType.follower && !_isScreaming)
         {
             _isAttacking = true;
         }
-        else
+        else if(!_isScreaming)
         {
             GhostSteps();
             _agent.SetDestination(_target.position);
@@ -112,9 +133,27 @@ public class GhostBehaviour : MonoBehaviour
             _source.Stop();
             _isScreaming = true;
             _source.PlayOneShot(_clips[0]);
-            _target.GetComponent<PlayerHealth>().TakeDamage(20);
+            _target.GetComponent<PlayerHealth>().TakeDamage(15);
         }
     }
+    private void OnCollisionStay(Collision collision)
+    {
+        if (collision.gameObject.tag != "Player") return;
+
+        if (_isScreaming)
+        {
+            return;
+        }
+
+        if (CurrentGhostType == GhostType.suicide)
+        {
+            _source.Stop();
+            _isScreaming = true;
+            _source.PlayOneShot(_clips[0]);
+            _target.GetComponent<PlayerHealth>().TakeDamage(15);
+        }
+    }
+   
 
     private void Disappearing(Transform parent)
     {
@@ -160,6 +199,11 @@ public class GhostBehaviour : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
+        if (!IsCanTakeDamage)
+        {
+            return;
+        }
+        StartCoroutine(C_Hit());
         CurrentHealth -= damage;
 
         if (CurrentHealth <= 0)
@@ -170,14 +214,36 @@ public class GhostBehaviour : MonoBehaviour
         }
     }
 
+    private IEnumerator C_Hit()
+    {
+        hit1.gameObject.SetActive(true);
+        yield return new WaitForSeconds(0.8f);
+        hit1.gameObject.SetActive(false);
+
+    }
+
+    public void TakeScan()
+    {
+        Debug.Log("scan");
+        StartCoroutine(C_Scaning());
+    }
+    private IEnumerator C_Scaning()
+    {
+        hit.gameObject.SetActive(true);
+        yield return new WaitForSeconds(0.8f);
+        hit.gameObject.SetActive(false);
+        IsCanTakeDamage = true;
+
+    }
+
     private IEnumerator AttackCooldown()
     {
         _agent.SetDestination(transform.position);
         _animator.Play("fix");
         _animator.Play("attack");
-
+        _source.PlayOneShot(punchSound);
         yield return new WaitForSeconds(.90f);
-        _target.GetComponent<PlayerHealth>().TakeDamage(20);
+        _target.GetComponent<PlayerHealth>().TakeDamage(15);
         yield return new WaitForSeconds(.85f);
 
         _isAttacking = false;

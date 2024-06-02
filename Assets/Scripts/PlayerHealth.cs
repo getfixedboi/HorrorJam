@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -10,9 +10,16 @@ public class PlayerHealth : MonoBehaviour
     private float _maxHealth;
     public static float CurrentHealth;
 
+    public Text heltsTEXT;
+
     private void Start()
     {
         CurrentHealth = _maxHealth;
+    }
+
+    private void Update()
+    {
+        heltsTEXT.text = "Health: " + CurrentHealth;
     }
     public void TakeDamage(float damage)
     {

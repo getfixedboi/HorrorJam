@@ -5,10 +5,12 @@ using UnityEngine;
 public class PlayerCollsion : MonoBehaviour
 {
     public static bool Second;
+    public static bool Third;
 
     private void Awake()
     {
         Second = false;
+        Third = false;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -16,6 +18,11 @@ public class PlayerCollsion : MonoBehaviour
         if (other.CompareTag("2"))
         {
             Second = true;
+            Destroy(other.gameObject);
+        }
+        if (other.CompareTag("3"))
+        {
+            Third = true;
             Destroy(other.gameObject);
         }
     }

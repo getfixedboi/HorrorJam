@@ -26,6 +26,11 @@ public class DialogueSystem : MonoBehaviour
 
     [SerializeField] private AudioClip[] _firstConversation;
     [SerializeField] private AudioClip[] _secondConversation;
+    [SerializeField] private AudioClip[] _thirdConversation;
+
+
+    public GameObject forgivines;
+    public GameObject enemies;
 
 
 
@@ -82,6 +87,35 @@ public class DialogueSystem : MonoBehaviour
         PlayerCollsion.Second = false;
     }
 
+    private IEnumerator C_Third()
+    {
+        IsDialogue = true;
+        _dialogueWindow.SetActive(true);
+        _sourceText.text = _config["5"].ToString();
+        _audioSource.PlayOneShot(_thirdConversation[0]);
+        yield return new WaitForSeconds(_thirdConversation[0].length);
+        _sourceText.text = _config["6"].ToString();
+        _audioSource.PlayOneShot(_thirdConversation[1]);
+        yield return new WaitForSeconds(_thirdConversation[1].length);
+        _sourceText.text = _config["7"].ToString();
+        _audioSource.PlayOneShot(_thirdConversation[2]);
+        yield return new WaitForSeconds(_thirdConversation[2].length);
+        _sourceText.text = _config["8"].ToString();
+        _audioSource.PlayOneShot(_thirdConversation[3]);
+        yield return new WaitForSeconds(_thirdConversation[3].length);
+        _sourceText.text = _config["9"].ToString();
+        _audioSource.PlayOneShot(_thirdConversation[4]);
+        yield return new WaitForSeconds(_thirdConversation[4].length);
+        _sourceText.text = _config["10"].ToString();
+        _audioSource.PlayOneShot(_thirdConversation[5]);
+        yield return new WaitForSeconds(_thirdConversation[5].length);
+        IsDialogue = false;
+        _dialogueWindow.SetActive(false);
+        PlayerCollsion.Third = false;
+        enemies.SetActive(true);
+        forgivines.SetActive(true);
+    }
+
 
     private void Update()
     {
@@ -89,7 +123,14 @@ public class DialogueSystem : MonoBehaviour
         {
             StartCoroutine(C_Second());
         }
-       
+
+        if (PlayerCollsion.Third && !IsDialogue)
+        {
+            StartCoroutine(C_Third());
+        }
+
+
+
     }
 
 

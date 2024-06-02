@@ -34,6 +34,15 @@ public class Revolver : MonoBehaviour
     [SerializeField] private Text _logoText;
 
 
+    public GameObject enemies;
+
+
+    public GameObject playerStats;
+
+
+    public Text bulelts;
+
+
     private void OnEnable()
     {
         StartCoroutine(C_PickUp());
@@ -47,6 +56,8 @@ public class Revolver : MonoBehaviour
         yield return new WaitForSeconds(2f);
         _isPicking = false;
         _logoText.gameObject.SetActive(false);
+        enemies.SetActive(true);
+        playerStats.SetActive(true);
 
     }
 
@@ -61,7 +72,7 @@ public class Revolver : MonoBehaviour
     }
     private void Update()
     {
-
+        bulelts.text = "Bullets: " + MagazineSize + "/" + _currMagazineSize;
         if (PauseMenu.IsPaused || DialogueSystem.IsDialogue)
         {
             _source.Stop();
