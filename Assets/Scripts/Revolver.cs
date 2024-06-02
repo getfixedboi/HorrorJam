@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class Revolver : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] protected GameObject Camera;
+    [SerializeField] protected GameObject _camera;
     [SerializeField] protected PlayerCameraMove cameraShake;
     [Header("For shake effect")]
     [SerializeField] protected float shakeDuration;
@@ -94,7 +94,7 @@ public class Revolver : MonoBehaviour
     }
    private void DealDamage()
     {
-        if (Physics.Raycast(Camera.transform.position, Camera.transform.forward, out _hit, Distance))
+        if (Physics.Raycast(_camera.transform.position, _camera.transform.forward, out _hit, Distance))
         {
            //// BaseEnemyScript enemy = _hit.collider.GetComponent<BaseEnemyScript>();
            // if (enemy != null)

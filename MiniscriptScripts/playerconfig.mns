@@ -1,4 +1,4 @@
 config = {
-    "mouseSensivity": 0.7704737,
+    "mouseSensivity": 0.593288,
     "gloablVolume": 1,
-    "vsync": 0}
+    "vsync": 1}
