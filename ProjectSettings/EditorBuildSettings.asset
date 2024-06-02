@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/merai.unity
     guid: 401e31745af05ca458456db5c1e0f95b
+  - enabled: 1
+    path: Assets/Scenes/death.unity
+    guid: 10e24cb11f9b3c54d92e188273da0034
   m_configObjects: {}
