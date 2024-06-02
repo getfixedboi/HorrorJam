@@ -25,6 +25,17 @@ public class PlayerCameraMove : MonoBehaviour
     private float _timer = 0;
     private Quaternion _origRotation;
 
+    public float MouseSensivity
+    {
+        get
+        {
+            return _mouseSensitivity;
+        }
+        set
+        {
+            _mouseSensitivity = value;
+        }
+    }
 
     private void Start()
     {
