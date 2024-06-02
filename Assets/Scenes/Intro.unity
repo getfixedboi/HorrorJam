@@ -294,10 +294,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fad1cc87ee3899245a55ac2a0bf6cc76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sourceText: All internal systems of the program are being checked, please wait.
-    All systems have been tested, no errors have been detected. We recommend playing
-    with headphones for a better experience. The game is made for Micro Jam 015.
-    Thank you for playing.
   _textHolder: {fileID: 274752430}
   _clips:
   - {fileID: 8300000, guid: 4b369af576584854ea3a5221a2096737, type: 3}
@@ -316,7 +312,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 6234ddede8311074fbbb51b71c07d7d4, type: 3}
   - {fileID: 8300000, guid: c488e4dfedfb4bc418f776fe9d8afb7e, type: 3}
   - {fileID: 8300000, guid: 811c4e4f154b69a47a95d5a24bda072d, type: 3}
-  _transitionManager: {fileID: 1731719190}
+  _transitionManager: {fileID: 1037022296}
 --- !u!82 &472673707
 AudioSource:
   m_ObjectHideFlags: 0
@@ -513,6 +509,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 966850558}
   m_CullTransparentMesh: 1
+--- !u!114 &1037022296 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4107171751686450446, guid: 2b58ac11584d6b14abc6872b50f95792, type: 3}
+  m_PrefabInstance: {fileID: 1837715354822226906}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93ef1224843d6d4419f5d3bf2652d1dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1171743466
 GameObject:
   m_ObjectHideFlags: 0
@@ -1013,17 +1020,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1670785556}
   m_CullTransparentMesh: 1
---- !u!114 &1731719190 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4107171751686450446, guid: 2b58ac11584d6b14abc6872b50f95792, type: 3}
-  m_PrefabInstance: {fileID: 1837715354822226906}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93ef1224843d6d4419f5d3bf2652d1dc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1799083761
 GameObject:
   m_ObjectHideFlags: 0
@@ -1599,6 +1595,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3264345983372346480, guid: 2b58ac11584d6b14abc6872b50f95792, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4838769622261607765, guid: 2b58ac11584d6b14abc6872b50f95792, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6210013939788430474, guid: 2b58ac11584d6b14abc6872b50f95792, type: 3}

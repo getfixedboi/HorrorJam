@@ -1,7 +1,10 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
+using static Unity.VisualScripting.Member;
 
 public class PlayerCameraMove : MonoBehaviour
 {
@@ -25,16 +28,16 @@ public class PlayerCameraMove : MonoBehaviour
     private float _timer = 0;
     private Quaternion _origRotation;
 
-    private float _sliderMultiplier =  0.01f;
+    private float _sliderMultiplier = 0.01f;
     public float MouseSensivity
     {
         get
         {
-            return _sliderMultiplier*_mouseSensitivity;
+            return _sliderMultiplier * _mouseSensitivity;
         }
         set
         {
-            _mouseSensitivity = value/_sliderMultiplier;
+            _mouseSensitivity = value / _sliderMultiplier;
         }
     }
 
@@ -48,6 +51,12 @@ public class PlayerCameraMove : MonoBehaviour
 
     private void Update()
     {
+        if (PauseMenu.IsPaused || DialogueSystem.IsDialogue)
+        {
+           
+            return;
+        }
+
         HeadBod();
         _x = Input.GetAxisRaw("Horizontal");
         _y = Input.GetAxisRaw("Vertical");
@@ -72,4 +81,15 @@ public class PlayerCameraMove : MonoBehaviour
             transform.rotation = _origRotation;
         }
     }
+
+    public IEnumerator C_Shake(float duration, float magnitude)
+    {
+        Vector3 originalPos = transform.localPosition;
+        transform.DOShakePosition(duration, magnitude)
+            .SetEase(Ease.OutQuad);
+        yield return new WaitForSeconds(duration);
+        transform.localPosition = originalPos;
+
+    }
+
 }

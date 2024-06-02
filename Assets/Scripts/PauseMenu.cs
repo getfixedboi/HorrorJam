@@ -19,8 +19,12 @@ public class PauseMenu : MonoBehaviour
     [SerializeField] private Slider _mouseSensitivitySlider; // Добавили ссылку на слайдер чувствительности мыши
     [SerializeField] private Toggle _vsyncToggle;
 
+
+    public static bool IsPaused;
+
     private void Awake()
     {
+        IsPaused = false;
         _pauseMenu.enabled = false;
 
         LoadMiniscrpt();
@@ -75,7 +79,7 @@ public class PauseMenu : MonoBehaviour
     private void OpenPauseMenu()
     {
         Time.timeScale = 0f;
-
+        IsPaused = true;
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
 
@@ -86,7 +90,7 @@ public class PauseMenu : MonoBehaviour
     public void ClosePauseMenu()
     {
         Time.timeScale = 1f;
-
+        IsPaused = false;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
