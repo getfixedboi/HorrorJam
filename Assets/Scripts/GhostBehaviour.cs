@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Miniscript;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -13,6 +14,13 @@ using UnityEngine.AI;
 [DisallowMultipleComponent]
 public class GhostBehaviour : MonoBehaviour
 {
+    public enum GhostType
+    {
+        follower,
+        suicide
+    }
+    public GhostType CurrentGhostType;
+
     private NavMeshAgent _agent;
     [SerializeField] private Material _origMaterial;
     private Material _material;
@@ -24,7 +32,17 @@ public class GhostBehaviour : MonoBehaviour
 
     private Transform _target;
     private bool _isScreaming = false;
+
+    [SerializeField] List<AudioClip> _clips;
+    [SerializeField] private int _id;
     [Range(0.01f, 1f)][SerializeField] private float _timeToWait;
+
+    private float _timer;
+    public float FootstepDelay;
+    private bool _isAttacking = false;
+    public int CurrentHealth = 25;
+
+    private bool _DisableMulInvoking=false;
 
     private void Awake()
     {
@@ -38,12 +56,12 @@ public class GhostBehaviour : MonoBehaviour
 
         _interpreter = new Interpreter();
         _interpreter.errorOutput = (string s, bool l) => ErrorOutput(s, l);
-        _sourceCode = _sourceCode = $"while true \n Dissapear \n wait {_timeToWait.ToString().Replace(',', '.')} \n end while";
+        _sourceCode = _sourceCode = $"while true \n Dissapear{_id.ToString()} \n wait {_timeToWait.ToString().Replace(',', '.')} \n end while";
 
-        Intrinsic f = Intrinsic.Create("Dissapear");
+        Intrinsic f = Intrinsic.Create($"Dissapear{_id.ToString()}");
         f.code = (context, partialResult) =>
         {
-            Disappearing();
+            Disappearing(this.transform);
             return new Intrinsic.Result(1);
         };
 
@@ -53,44 +71,66 @@ public class GhostBehaviour : MonoBehaviour
 
     private void Update()
     {
+        if(_DisableMulInvoking)
+        {
+            return;
+        }
         if (_isScreaming)
         {
+            _agent.SetDestination(transform.position);
             _interpreter.RunUntilDone(.1);
-            _animator.Play("idle");
+            _animator.Play("death");
+        }
+        else if (Vector3.Distance(transform.position,_target.position)<=_agent.stoppingDistance && _isAttacking && CurrentGhostType == GhostType.follower)
+        {
+            _DisableMulInvoking=true;
+            StartCoroutine(AttackCooldown());
+        }
+        else if (Vector3.Distance(transform.position,_target.position)<=_agent.stoppingDistance && !_isAttacking && CurrentGhostType == GhostType.follower)
+        {
+            _isAttacking=true;
         }
         else
         {
+            GhostSteps();
             _agent.SetDestination(_target.position);
             _animator.Play("run");
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
-        if (other.tag == "Player")
+        if (other.tag != "Player") return;
+
+        if (_isScreaming)
         {
-            _source.Play();
+            return;
+        }
+
+        if (CurrentGhostType == GhostType.suicide)
+        {
+            _source.Stop();
+            _source.PlayOneShot(_clips[0]);
             _isScreaming = true;
+            _target.GetComponent<PlayerHealth>().TakeDamage(20);
         }
     }
 
-    private void Disappearing()
+    private void Disappearing(Transform parent)
     {
-        Transform parent = transform;
-
         float opacity = _material.color.a;
         Color color = _material.color;
-        _material.color = new Color(color.r, color.g, color.b, opacity-0.01f);
+        _material.color = new Color(color.r, color.g, color.b, opacity - 0.01f);
 
-        ChangeMaterialsToLocal(parent,_material);
+        ChangeMaterialsToLocal(parent, _material);
 
-        if(opacity<=0)
+        if (opacity <= 0)
         {
             Destroy(gameObject);
         }
     }
 
-    private void ChangeMaterialsToLocal(Transform parent,Material material)
+    private void ChangeMaterialsToLocal(Transform parent, Material material)
     {
         foreach (Transform child in parent)
         {
@@ -99,13 +139,48 @@ public class GhostBehaviour : MonoBehaviour
             {
                 renderer.material = material;
             }
-            
+
             // Рекурсивно обрабатываем всех детей
             if (child.childCount > 0)
             {
-                ChangeMaterialsToLocal(child,material);
+                ChangeMaterialsToLocal(child, material);
             }
         }
+    }
+
+    private void GhostSteps()
+    {
+        _timer -= Time.deltaTime;
+        if (_timer <= 0f)
+        {
+            _source.PlayOneShot(_clips[1]);
+            _timer = FootstepDelay;
+        }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        CurrentHealth -= damage;
+
+        if (CurrentHealth <= 0)
+        {
+            _isScreaming=true;
+            _DisableMulInvoking=false;
+        }
+    }
+
+    private IEnumerator AttackCooldown()
+    {
+        _agent.SetDestination(transform.position);
+        _animator.Play("fix");
+        _animator.Play("attack");
+        
+        yield return new WaitForSeconds(.90f);
+        _target.GetComponent<PlayerHealth>().TakeDamage(20);
+        yield return new WaitForSeconds(.85f);
+
+        _isAttacking = false;
+        _DisableMulInvoking=false;
     }
 
     private void ErrorOutput(string s, bool l)

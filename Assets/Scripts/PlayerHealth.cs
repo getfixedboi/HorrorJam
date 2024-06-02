@@ -1,23 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerHealth : MonoBehaviour
 {
     [SerializeField]
     private float _maxHealth;
-    private float _currentHealth;
+    public static float CurrentHealth;
 
     private void Start()
     {
-        _currentHealth = _maxHealth;
+        CurrentHealth = _maxHealth;
     }
     public void TakeDamage(float damage)
     {
-        _currentHealth -= damage;
-        if(_currentHealth <= 0)
+        CurrentHealth -= damage;
+        if(CurrentHealth <= 0)
         {
-            Destroy(gameObject);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
 }
