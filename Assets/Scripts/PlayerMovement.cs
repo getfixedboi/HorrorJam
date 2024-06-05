@@ -26,7 +26,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if (PauseMenu.IsPaused || DialogueSystem.IsDialogue)
+        if (PauseMenu.IsPaused)
         {
           
             return;

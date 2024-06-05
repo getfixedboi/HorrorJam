@@ -45,7 +45,7 @@ public class Pultik : MonoBehaviour
     private void Update()
     {
 
-        if (PauseMenu.IsPaused || DialogueSystem.IsDialogue)
+        if (PauseMenu.IsPaused)
         {
             _audioSource.Stop();
             return;

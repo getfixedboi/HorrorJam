@@ -241,8 +241,8 @@ public class GhostBehaviour : MonoBehaviour
         _agent.SetDestination(transform.position);
         _animator.Play("fix");
         _animator.Play("attack");
-        _source.PlayOneShot(punchSound);
         yield return new WaitForSeconds(.90f);
+        _source.PlayOneShot(punchSound);
         _target.GetComponent<PlayerHealth>().TakeDamage(15);
         yield return new WaitForSeconds(.85f);
 

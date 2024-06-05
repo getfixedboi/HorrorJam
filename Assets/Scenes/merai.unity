@@ -10831,7 +10831,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxHealth: 100
-  heltsTEXT: {fileID: 2086554989}
+  hptext: {fileID: 2086554989}
 --- !u!114 &258981485
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10844,7 +10844,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 197b5eb73ff592c48b11c5ec586da7d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interactDistance: 2.5
+  _interactDistance: 4.5
   _mainCamera: {fileID: 1945870301}
 --- !u!114 &258981486
 MonoBehaviour:
@@ -54341,7 +54341,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 4ba919e9ae86cfd4fb8662eec58f3faa, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 10.63
+      value: 9.4
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 4ba919e9ae86cfd4fb8662eec58f3faa, type: 3}
       propertyPath: m_LocalPosition.z

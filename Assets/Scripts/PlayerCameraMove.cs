@@ -51,7 +51,7 @@ public class PlayerCameraMove : MonoBehaviour
 
     private void Update()
     {
-        if (PauseMenu.IsPaused || DialogueSystem.IsDialogue)
+        if (PauseMenu.IsPaused)
         {
            
             return;

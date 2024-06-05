@@ -73,7 +73,7 @@ public class Revolver : MonoBehaviour
     private void Update()
     {
         bulelts.text = "Bullets: " + MagazineSize + "/" + _currMagazineSize;
-        if (PauseMenu.IsPaused || DialogueSystem.IsDialogue)
+        if (PauseMenu.IsPaused)
         {
             _source.Stop();
             return;
